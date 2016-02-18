@@ -1,17 +1,14 @@
 /*
-  * Copyright (C) 2016 Rubicon Project. All rights reserved
+ * Copyright (C) 2016 Rubicon Project. All rights reserved
  * 
- * @author: Rubicon Project.
- *  file for integrating RFM SDK with Admob SDK
- *  RFM SDK will be triggered via Admob Custom Banner Event
- *  version: 1.0.0
+ * Adapter for integrating RFM SDK with Admob SDK
+ * RFM SDK will be triggered via Admob Custom Banner Event
+ * version: 3.0.0
  * 
  */
 package com.rfm.extras.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

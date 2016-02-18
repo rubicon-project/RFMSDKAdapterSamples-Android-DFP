@@ -1,4 +1,11 @@
-
+/*
+ * Copyright (C) 2016 Rubicon Project. All rights reserved
+ *
+ * Adapter for integrating RFM SDK with Admob SDK
+ * RFM SDK will be triggered via Admob Custom Interstitial
+ * version: 1.0.0
+ *
+ */
 package com.rfm.extras.adapters;
 
 import android.app.Activity;

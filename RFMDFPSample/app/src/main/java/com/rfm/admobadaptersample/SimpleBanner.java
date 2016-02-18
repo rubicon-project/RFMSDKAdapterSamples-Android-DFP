@@ -12,7 +12,9 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.rfm.admobadaptersample.sample.BaseActivity;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
 public class SimpleBanner extends BaseActivity implements AppEventListener {
@@ -28,6 +30,8 @@ public class SimpleBanner extends BaseActivity implements AppEventListener {
         adView = new PublisherAdView(this);
         LinearLayout layout = (LinearLayout) findViewById(R.id.adcontainer);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(mAdWidth*displayDesity, mAdHeight*displayDesity);
+        llp.gravity= Gravity.CENTER;
+
         // Add the adView to it.
         layout.addView(adView, llp);
         updateAdView();
@@ -45,15 +49,32 @@ public class SimpleBanner extends BaseActivity implements AppEventListener {
 
     @Override
     public void updateAdView() {
-        setAdRequestSize(mAdWidth, mAdHeight, adView);
-        adView.setAdSizes(new com.google.android.gms.ads.AdSize(mAdWidth, mAdHeight));
+        try {
+            setAdRequestSize(mAdWidth, mAdHeight, adView);
+            DisplayMetrics dm = fetchScreenSize(this);
+            if(mAdWidth < -1) {
+                mAdWidth = (int) (dm.widthPixels/dm.density);
+            }
+            if(mAdHeight < -1) {
+                mAdHeight = (int) (dm.heightPixels/dm.density);
+            }
+            if (adView != null) {
+                adView.setAdSizes(new com.google.android.gms.ads.AdSize(mAdWidth, mAdHeight));
+            }
+        } catch (Exception e){
+            Log.i(LOG_TAG, "Failed to set ad size "+e.getMessage());
+        }
     }
 
     @Override
     public void loadAd() {
-        adView.loadAd(new PublisherAdRequest.Builder().build());
-        mNumberOfRequests = mNumberOfRequests + 1;
-        updateCountersView();
+        try {
+            adView.loadAd(new PublisherAdRequest.Builder().build());
+            mNumberOfRequests = mNumberOfRequests + 1;
+            updateCountersView();
+        } catch (Exception e) {
+            Log.i(LOG_TAG, "Failed to load ad "+e.getMessage());
+        }
     }
 
     @Override
@@ -84,6 +105,9 @@ public class SimpleBanner extends BaseActivity implements AppEventListener {
     }
 
     public void createBannerRequest() {
+        if(adView == null) {
+            Log.e(LOG_TAG, "Failed to request banner for an invalid Ad View ");
+        }
         adView.setAdUnitId(siteId);
         adView.setAdListener(new AdListener() {
             @Override

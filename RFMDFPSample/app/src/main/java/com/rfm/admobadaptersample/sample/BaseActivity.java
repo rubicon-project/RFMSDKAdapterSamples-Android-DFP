@@ -12,7 +12,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -286,6 +288,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Problems while configuring layout size based on preferences "+e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public static DisplayMetrics fetchScreenSize(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        return metrics;
     }
 
 }
