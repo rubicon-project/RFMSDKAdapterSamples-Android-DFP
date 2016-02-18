@@ -98,7 +98,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         adUnitList.add(new AdUnit(-1, "AdMob Custom Interstitial - VAST", "/5300653/QA_FastLane_Banner_VideoVAST_StandardInventory",
                 AdUnit.AdType.ADMOB_INTERSTITIAL_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
                 "", -1, -1, true, "", false, "", "", ""));
-        adUnitList.add(new AdUnit(-1, "AdMob FastLane Banner", "/5300653/custom_admob",
+        adUnitList.add(new AdUnit(-1, "AdMob FastLane Banner", "/5300653/RAV_DFP_BANNER_FL_MID_SLOT",
                 AdUnit.AdType.ADMOB_FASTLANE_BANNER_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
                 "", 320, 50, true, "", false, "", "", ""));
 

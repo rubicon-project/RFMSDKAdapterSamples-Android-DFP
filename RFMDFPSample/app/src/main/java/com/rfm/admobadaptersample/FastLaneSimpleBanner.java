@@ -60,8 +60,7 @@ public class FastLaneSimpleBanner extends BaseActivity implements AppEventListen
 
     private void createRFMFastLaneRequest() {
 
-        rfmAdRequest.setRFMTestAdId("28243");
-        rfmAdRequest.setRFMParams("http://mrp.rubiconproject.com/", "111315", "4A24CB908FB3013209C822000B2E019E");
+        rfmAdRequest.setRFMParams("http://mrp.rubiconproject.com/", "111315", "792A6740AA8B01330EE222000B2E019E");
         rfmAdRequest.setAdDimensionParams(320, 50);
 
     }
