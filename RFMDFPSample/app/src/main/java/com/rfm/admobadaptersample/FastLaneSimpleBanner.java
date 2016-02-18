@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016. Rubicon Project. All rights reserved
- *
+ * RFM SDK verion required: 4.1.0
  */
 package com.rfm.admobadaptersample;
 
