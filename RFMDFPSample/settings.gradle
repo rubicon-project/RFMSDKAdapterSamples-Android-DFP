@@ -1,0 +1,5 @@
+include ':app'
+
+// for development
+//include ':app', ':SDKProject'
+//project(':SDKProject').projectDir=new File("C:\\Rubi\\sourcecode\\rfm_android_sdk\\Android\\V3\\Libraries\\SDKProject")
