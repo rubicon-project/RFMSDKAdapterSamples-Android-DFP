@@ -12,9 +12,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String LOG_TAG = "BaseActivity";
 
     protected String adUnitTitle;
+    protected String rowNumber;
     protected long adUnitId;
     protected String siteId;
 
@@ -70,6 +69,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         AdUnit adUnit = AdUnit.fromBundle(extras);
 
         adUnitTitle = adUnit.getTestCaseName();
+
+        rowNumber = String.valueOf(adUnit.getCount());
 
         adUnitId = adUnit.getId();
 
@@ -123,18 +124,23 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.sample_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(adUnitTitle);
+        if (collapsingToolbar != null)
+            collapsingToolbar.setTitle("(" + rowNumber + ") " + adUnitTitle);
 
         TextView backdropSubtext = (TextView) findViewById(R.id.backdrop_subtext);
-        backdropSubtext.setText(getResources().getString(R.string.site_id) + siteId);
+        if (backdropSubtext != null)
+            backdropSubtext.setText(getResources().getString(R.string.site_id) + siteId);
 
         FloatingActionButton fetchAd = (FloatingActionButton) findViewById(R.id.fetch_ad);
-        fetchAd.setOnClickListener(new View.OnClickListener() {
+        if (fetchAd != null)
+            fetchAd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadAd();
@@ -145,51 +151,62 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         RelativeLayout counters_text_view_title = (RelativeLayout) findViewById(R.id.expand_list_container);
         countersTextViewContent = (TextView) findViewById(R.id.counters_text_view_content);
-        counters_text_view_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView expandButton = (ImageView) findViewById(R.id.expand_button);
-                if (isCounterViewExpanded) {
-                    expandButton.setImageResource(R.drawable.ic_arrow_up_white);
-                    ExpandCollapseHelper.collapse(countersTextViewContent);
-                } else {
-                    expandButton.setImageResource(R.drawable.ic_arrow_down_white);
-                    ExpandCollapseHelper.expand(countersTextViewContent);
+        if (counters_text_view_title != null) {
+            counters_text_view_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageView expandButton = (ImageView) findViewById(R.id.expand_button);
+                    if (expandButton != null) {
+                        if (isCounterViewExpanded) {
+                            expandButton.setImageResource(R.drawable.ic_arrow_up_white);
+                            ExpandCollapseHelper.collapse(countersTextViewContent);
+                        } else {
+                            expandButton.setImageResource(R.drawable.ic_arrow_down_white);
+                            ExpandCollapseHelper.expand(countersTextViewContent);
+                        }
+                    }
+                    isCounterViewExpanded = !isCounterViewExpanded;
                 }
-                isCounterViewExpanded = !isCounterViewExpanded;
-            }
-        });
+            });
+        }
 
         RelativeLayout logs_text_view_title = (RelativeLayout) findViewById(R.id.logs_text_view_content);
         final TextView logText = (TextView) findViewById(R.id.log_text);
-        logs_text_view_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView expandButton2 = (ImageView) findViewById(R.id.expand_button_2);
-                if (isLogsViewExpanded) {
-                    expandButton2.setImageResource(R.drawable.ic_arrow_up_white);
-                    ExpandCollapseHelper.collapse(logText);
-                } else {
-                    expandButton2.setImageResource(R.drawable.ic_arrow_down_white);
-                    ExpandCollapseHelper.expand(logText);
+        if (logs_text_view_title != null) {
+            logs_text_view_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageView expandButton2 = (ImageView) findViewById(R.id.expand_button_2);
+                    if (expandButton2 != null) {
+                        if (isLogsViewExpanded) {
+                            expandButton2.setImageResource(R.drawable.ic_arrow_up_white);
+                            ExpandCollapseHelper.collapse(logText);
+                        } else {
+                            expandButton2.setImageResource(R.drawable.ic_arrow_down_white);
+                            ExpandCollapseHelper.expand(logText);
+                        }
+                    }
+                    isLogsViewExpanded = !isLogsViewExpanded;
                 }
-                isLogsViewExpanded = !isLogsViewExpanded;
-            }
-        });
+            });
+        }
 
         ImageView clearButton = (ImageView) findViewById(R.id.clear_button);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNumberOfRequests  = 0;
-                mNumberOfSuccess  = 0;
-                mNumberOfFailures  = 0;
-                updateCountersView();
-            }
-        });
+        if (clearButton != null) {
+            clearButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mNumberOfRequests = 0;
+                    mNumberOfSuccess = 0;
+                    mNumberOfFailures = 0;
+                    updateCountersView();
+                }
+            });
+        }
 
         ImageView clearButton2 = (ImageView) findViewById(R.id.clear_button_2);
-        clearButton2.setOnClickListener(new View.OnClickListener() {
+        if (clearButton2 != null)
+            clearButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearLogsView();
@@ -288,14 +305,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Problems while configuring layout size based on preferences "+e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    public static DisplayMetrics fetchScreenSize(Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        DisplayMetrics metrics = new DisplayMetrics();
-        display.getMetrics(metrics);
-        return metrics;
     }
 
 }

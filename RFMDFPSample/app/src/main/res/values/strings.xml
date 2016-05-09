@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">RFM DFP Sample</string>
+    <string name="app_name">Admob Adapter</string>
 
     <!-- Mopub ad unit ids -->
     <!-- from mopub sample	<string name="ad_unit_id_banner">b195f8dd8ded45fe847ad89ed1d016da</string> -->
@@ -49,6 +49,7 @@
     <string name="db_upload_success">SUCCESS: created test cases from json file!</string>
     <string name="db_upload_failure">FAILURE: failed to parse json file!</string>
     <string name="json_file_not_found">FAILURE: input json file not found!</string>
+    <string name="json_file_no_permission">FAILURE: failed to read input json due to missing permission!</string>
 
     <!-- others -->
     <string name="interstitial_ad_header">RFM Interstitial</string>

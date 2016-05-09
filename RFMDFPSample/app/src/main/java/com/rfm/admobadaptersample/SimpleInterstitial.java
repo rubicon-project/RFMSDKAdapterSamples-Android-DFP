@@ -46,8 +46,6 @@ public class SimpleInterstitial extends BaseActivity {
 
 
         updateAdView();
-        createInterstitial();
-        createAdListener();
 
         setLoadAdAction();
 
@@ -71,6 +69,10 @@ public class SimpleInterstitial extends BaseActivity {
             displayButton.setText(R.string.displayad);
             displayButton.setVisibility(View.INVISIBLE);
         }
+
+        createInterstitial();
+        createAdListener();
+
         interstitialAd.loadAd(new PublisherAdRequest.Builder().addTestDevice("2CC6189A7D478F739F11622ECCB6EB5F").
                 build());
         mNumberOfRequests = mNumberOfRequests +1;

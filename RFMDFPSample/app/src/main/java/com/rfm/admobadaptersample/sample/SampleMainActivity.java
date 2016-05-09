@@ -4,14 +4,17 @@
  */
 package com.rfm.admobadaptersample.sample;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,18 +23,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.DismissableManager;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.SimpleSwipeUndoAdapter;
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 import com.rfm.admobadaptersample.R;
 
 import java.io.File;
@@ -41,11 +39,11 @@ import java.util.List;
 public class SampleMainActivity extends AppCompatActivity {
 
     private String LOG_TAG = "SampleMainActivity";
-    private static final int INITIAL_DELAY_MILLIS = 300;
     private AdDataSource mAdDataSource;
-    private DynamicListView mSampleAdsListView;
+    private ListView mSampleAdsListView;
     private SampleListAdapter mSampleAdsListAdapter;
     private long firstAdUnitId = -1;
+    private static final int READ_INPUT_JSON_PERMISSION_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,56 +58,69 @@ public class SampleMainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("RFM DFP Sample");
+        toolbarTitle.setText("Admob Adapter");
 
         mAdDataSource = AdDataSource.getInstance(this);
 
-        mSampleAdsListView = (DynamicListView) findViewById(R.id.dynamic_list);
+        mSampleAdsListView = (ListView) findViewById(R.id.dynamic_list);
         mSampleAdsListAdapter = new SampleListAdapter(this);
+        mSampleAdsListView.setAdapter(mSampleAdsListAdapter);
 
-
-        SimpleSwipeUndoAdapter simpleSwipeUndoAdapter = new SimpleSwipeUndoAdapter(
-                mSampleAdsListAdapter, this, new MyOnDismissCallback(mSampleAdsListAdapter));
-        AlphaInAnimationAdapter animAdapter = new AlphaInAnimationAdapter(simpleSwipeUndoAdapter);
-        animAdapter.setAbsListView(mSampleAdsListView);
-        assert animAdapter.getViewAnimator() != null;
-        animAdapter.getViewAnimator().setInitialDelayMillis(INITIAL_DELAY_MILLIS);
-        mSampleAdsListView.setAdapter(animAdapter);
-
-        mSampleAdsListView.enableSimpleSwipeUndo();
-
+        final SwipeDetector swipeDetector = new SwipeDetector();
+        mSampleAdsListView.setOnTouchListener(swipeDetector);
         mSampleAdsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // Launch the correct activity when list view item is clicked
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
+
+                if (swipeDetector.swipeDetected()) {
+                    /* Do not allow swiping the headers and predefined items. */
+                    boolean shouldDelete = true;
+                    if (!mSampleAdsListAdapter.isEnabled(position)) {
+                        shouldDelete = false;
+                    }
                     AdUnit adUnit = (AdUnit) mSampleAdsListAdapter.getItem(position);
-                    Intent i = new Intent(getApplicationContext(),
-                            Class.forName(adUnit.getActivityClass().getName()));
-                    i.putExtras(adUnit.toBundle());
-                    startActivity(i);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    if (!adUnit.isCustom()) {
+                        shouldDelete = false;
+                    }
+
+                    if (shouldDelete) {
+                        AdUnit _adUnit = (AdUnit) mSampleAdsListAdapter.getItem(position);
+                        deleteAdUnit(_adUnit);
+                    }
+
+                } else {
+                    try {
+                        AdUnit adUnit = (AdUnit) mSampleAdsListAdapter.getItem(position);
+                        Intent i = new Intent(getApplicationContext(),
+                                Class.forName(adUnit.getActivityClass().getName()));
+                        i.putExtras(adUnit.toBundle());
+                        startActivity(i);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
 
-        mSampleAdsListView.setDismissableManager(
-                new DismissableManager() {
-                    @Override
-                    public boolean isDismissable(final long id, final int position) {
-                        /* Don't allow swiping the headers and predefined items. */
-                        if (!mSampleAdsListAdapter.isEnabled(position)) {
-                            return false;
-                        }
-                        AdUnit adUnit = (AdUnit) mSampleAdsListAdapter.getItem(position);
-                        if (!adUnit.isCustom()) {
-                            return false;
-                        }
-                        return true;
-                    }
+        mSampleAdsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                boolean shouldDelete = true;
+                if (!mSampleAdsListAdapter.isEnabled(pos)) {
+                    shouldDelete = false;
                 }
-        );
+                AdUnit adUnit = (AdUnit) mSampleAdsListAdapter.getItem(pos);
+                if (!adUnit.isCustom()) {
+                    shouldDelete = false;
+                }
+
+                if (shouldDelete) {
+                    AdUnit _rfmAd = (AdUnit) mSampleAdsListAdapter.getItem(pos);
+                    //editAdUnit(_rfmAd.getId());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         updateListUI();
 
@@ -123,23 +134,6 @@ public class SampleMainActivity extends AppCompatActivity {
             updateListUI();
         }
     };
-
-    private class MyOnDismissCallback implements OnDismissCallback {
-
-        private final SampleListAdapter mAdapter;
-
-        MyOnDismissCallback(final SampleListAdapter adapter) {
-            mAdapter = adapter;
-        }
-
-        @Override
-        public void onDismiss(@NonNull final ViewGroup listView, @NonNull final int[] reverseSortedPositions) {
-            for (int position : reverseSortedPositions) {
-                AdUnit adUnit = (AdUnit) mSampleAdsListAdapter.getItem(position);
-                deleteAdUnit(adUnit);
-            }
-        }
-    }
 
     private void addAdUnit(final AdUnit adUnit) {
         AdUnit createdAdUnit = mAdDataSource.createAdUnit(adUnit);
@@ -195,7 +189,7 @@ public class SampleMainActivity extends AppCompatActivity {
                         final AdUnit.AdType adType = adTypes[adTypeSpinner.getSelectedItemPosition()];
                         final AdUnit adUnit = new AdUnit(-1, testCaseName, siteId, adType,
                                 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
-                                "", 320, 50, true, "", true, "", "", "");
+                                "", 320, 50, true, "", true, "", "", "", 0);
                         addAdUnit(adUnit);
 
                         dialog.dismiss();
@@ -212,7 +206,6 @@ public class SampleMainActivity extends AppCompatActivity {
         alert.show();
     }
 
-
     private void updateListUI() {
         boolean addedUserDefinedHeader = false;
         mSampleAdsListAdapter.clear();
@@ -222,7 +215,6 @@ public class SampleMainActivity extends AppCompatActivity {
         firstAdUnitId = adUnits.get(0).getId();
         int count = 0;
         for (final AdUnit adUnit : adUnits) {
-            Log.d(LOG_TAG, "_ID: "+ adUnit.getId());
             if (adUnit.isCustom() && !addedUserDefinedHeader) {
                 addedUserDefinedHeader = true;
                 mSampleAdsListAdapter.add(new SampleListHeader("USER DEFINED"));
@@ -284,16 +276,50 @@ public class SampleMainActivity extends AppCompatActivity {
 
     private void setJsonToDBUploader() {
         final View uploadFileToDB = findViewById(R.id.upload_file_to_db);
-        uploadFileToDB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetCount();
-                if (clickCount == 10) {
-                    uploadJsonToDB();
+        if (uploadFileToDB != null) {
+            uploadFileToDB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resetCount();
+                    if (clickCount == 10) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            getPermissionToReadInputJson();
+                        } else {
+                            uploadJsonToDB();
+                        }
+                    }
+                    clickCount++;
                 }
-                clickCount++;
+            });
+        }
+    }
+
+    public void getPermissionToReadInputJson() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        READ_INPUT_JSON_PERMISSION_REQUEST);
+            } else {
+                uploadJsonToDB();
             }
-        });
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case READ_INPUT_JSON_PERMISSION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    uploadJsonToDB();
+                } else {
+                    Utils.snackbar(SampleMainActivity.this, getResources().getString(R.string.json_file_no_permission), false);
+                }
+                return;
+            }
+        }
     }
 
     private void uploadJsonToDB() {

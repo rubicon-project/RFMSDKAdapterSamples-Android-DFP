@@ -112,7 +112,8 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
             }
 
             public void onInterstitialAdDismissed(RFMAdView adView) {
-                rfmAdView.setVisibility(View.GONE);
+                if (rfmAdView != null)
+                    rfmAdView.setVisibility(View.GONE);
                 RFMViewInterstitialActivity.dismissActivity();
                 Log.v("LOG_TAG", "RFM Ad: Interstitial ad dismissed");
             }
@@ -143,7 +144,6 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
                 if (RFMLog.canLogVerbose()) {
                     Log.v(LOG_TAG, " Into didDisplayAd ");
                 }
-                rfmAdView.displayAd();
             }
 
             @Override
@@ -162,7 +162,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
 
     @Override
     public void showInterstitial() {
-        if(rfmAdView.isAdAvailableToDisplay() ||
+        if(rfmAdView != null && rfmAdView.isAdAvailableToDisplay() ||
                 rfmAdView.getAdStateRO().getCurrentState() == AdState.AdViewState.INTERSTITIAL_DISP) {
             showFullScreenRFMInterstitial();
             if(customEventInterstitialListener != null) {
@@ -182,6 +182,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
         } catch (Exception e) {
             Log.d(LOG_TAG, "Failed to clean up RFM Adview "+e.getMessage());
         }
+        customEventInterstitialListener = null;
     }
 
     @Override

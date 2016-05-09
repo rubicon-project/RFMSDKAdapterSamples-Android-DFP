@@ -1,10 +1,9 @@
 /*
  * Copyright (c) 2016. Rubicon Project. All rights reserved
- * RFM SDK verion required: 4.1.0
+ *
  */
 package com.rfm.admobadaptersample;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +24,6 @@ public class FastLaneSimpleInterstitial extends BaseActivity implements AppEvent
 
     private final String LOG_TAG = "FastLaneInterstitial";
     private PublisherInterstitialAd interstitialAd;
-    private Context mContext;
     private Button displayButton;
 
     private RFMFastLane rfmFastLane;
@@ -35,7 +33,6 @@ public class FastLaneSimpleInterstitial extends BaseActivity implements AppEvent
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admob_interstitial);
-        mContext = getApplicationContext();
         displayButton = (Button)findViewById(R.id.displayad);
         if(displayButton != null) {
             displayButton.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +49,6 @@ public class FastLaneSimpleInterstitial extends BaseActivity implements AppEvent
             displayButton.setVisibility(View.INVISIBLE);
         }
 
-
         updateAdView();
         createInterstitial();
         createAdListener();
@@ -68,9 +64,11 @@ public class FastLaneSimpleInterstitial extends BaseActivity implements AppEvent
 
     }
 
-
     private void createRFMFastLaneRequest() {
-        rfmAdRequest.setRFMParams("http://mrp.rubiconproject.com/", "111315", "6EF66140AC6901330EE722000B2E019E");
+        if(rfmAdId != null && !rfmAdId.trim().equalsIgnoreCase("0")) {
+            rfmAdRequest.setRFMTestAdId(rfmAdId);
+        }
+        rfmAdRequest.setRFMParams(rfmServer, rfmPubId, rfmAppId);
         rfmAdRequest.setRFMAdAsInterstitial(true);
     }
 

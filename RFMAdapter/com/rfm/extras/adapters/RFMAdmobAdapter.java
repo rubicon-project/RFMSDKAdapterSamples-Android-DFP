@@ -1,14 +1,17 @@
 /*
- * Copyright (C) 2016 Rubicon Project. All rights reserved
+  * Copyright (C) 2016 Rubicon Project. All rights reserved
  * 
- * Adapter for integrating RFM SDK with Admob SDK
- * RFM SDK will be triggered via Admob Custom Banner Event
- * version: 3.0.0
+ * @author: Rubicon Project.
+ *  file for integrating RFM SDK with Admob SDK
+ *  RFM SDK will be triggered via Admob Custom Banner Event
+ *  version: 1.0.0
  * 
  */
 package com.rfm.extras.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -96,7 +99,8 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			@Override
 			public void onAdReceived(RFMAdView adView) {
 				Log.d(LOG_TAG, "RFM :onAdReceived ");
-				rfmAdView.setVisibility(View.VISIBLE);
+				if (rfmAdView != null)
+					rfmAdView.setVisibility(View.VISIBLE);
 
 				if (customEventListener != null) {
 					customEventListener.onAdLoaded(adView);
@@ -180,7 +184,8 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			@Override
 			public void onAdFailed(RFMAdView adView) {
 				Log.d(LOG_TAG, "RFM :onAdFailed ");
-				rfmAdView.setVisibility(View.GONE);
+				if (rfmAdView != null)
+					rfmAdView.setVisibility(View.GONE);
 
 				if (customEventListener != null) {
 					// 222 is random code, can be customized
