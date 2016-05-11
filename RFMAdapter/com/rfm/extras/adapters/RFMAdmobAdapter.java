@@ -4,7 +4,6 @@
  * @author: Rubicon Project.
  *  file for integrating RFM SDK with Admob SDK
  *  RFM SDK will be triggered via Admob Custom Banner Event
- *  version: 1.0.0
  * 
  */
 package com.rfm.extras.adapters;
@@ -25,6 +24,9 @@ import com.rfm.sdk.RFMAdRequest;
 import com.rfm.sdk.RFMAdView;
 import com.rfm.sdk.RFMAdViewListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RFMAdmobAdapter implements CustomEventBanner {
 
 	private static final String LOG_TAG = "RFMAdmobAdapter";
@@ -36,6 +38,12 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 	////RFM Placement Settings
 	private static final String RFM_SERVER_NAME = "http://mrp.rubiconproject.com/";
 	private static final String RFM_PUB_ID = "111008";
+
+	private HashMap<String, String> localTargetingInfoHM = new HashMap<String, String>();
+
+	RFMAdmobAdapter() {
+		localTargetingInfoHM.put("adp_version", "dfp_adp_1.2.0");
+	}
 
 	@Override
 	public void requestBannerAd(Context _context,
@@ -67,6 +75,9 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 		}else{
 			mAdRequest.setAdDimensionParams(adWidth, adHeight);
 		}
+
+		HashMap<String, String> targetingParamsHM = getTargetingParams();
+		mAdRequest.setTargetingParams(targetingParamsHM);
 
 		setBannerAdViewListener();
 		/*Optional Targeting Parameters*/
@@ -194,6 +205,12 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			}
 		});
 
+	}
+
+	private HashMap<String, String> getTargetingParams() {
+		HashMap<String, String> targetingHM = new HashMap<String, String>();
+		targetingHM.putAll(localTargetingInfoHM);
+		return targetingHM;
 	}
 
 	@Override
