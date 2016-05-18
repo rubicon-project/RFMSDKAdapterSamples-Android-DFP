@@ -42,7 +42,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
     private HashMap<String, String> localTargetingInfoHM = new HashMap<String, String>();
 
     RFMAdmobInterstitialAdapter() {
-        localTargetingInfoHM.put("adp_version", "dfp_adp_1.2.0");
+        localTargetingInfoHM.put("adp_version", "dfp_adp_3.1.0");
     }
 
     @Override
