@@ -77,30 +77,27 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final List<AdUnit> adUnitList = new ArrayList<AdUnit>();
 
-        adUnitList.add(new AdUnit(-1, "Admob Banner", "/6253334/dfp_example_ad/banner",
+        adUnitList.add(new AdUnit(-1, "AdMob Banner", "/6253334/dfp_example_ad/banner",
                 AdUnit.AdType.ADMOB_BANNER_AD, 1, 0, AdUnit.LocationType.NORMAL, "6","0.0", "0.0",
-                "", 320, 50, true, "", false, "", "", ""));
+                "", 320, 50, true, "", false, "", "", "", 1));
 
         // /5300653/android-adapter-neelan
         // /5300653/AndroidApp_S2S_Banner_320x50
 
-        adUnitList.add(new AdUnit(-1, "Admob Custom Banner", "/5300653/AndroidApp_S2S_Banner_320x50",
+        adUnitList.add(new AdUnit(-1, "AdMob Custom Banner", "/5300653/rfmsdk-sample-android",
                 AdUnit.AdType.ADMOB_BANNER_AD, 1, 0, AdUnit.LocationType.NORMAL, "6","0.0", "0.0",
-                "", 320, 50, true, "", false, "", "", ""));
+                "", 320, 50, true, "", false, "", "", "", 2));
         adUnitList.add(new AdUnit(-1, "AdMob Interstitial", "ca-app-pub-3940256099942544/1033173712",
                 AdUnit.AdType.ADMOB_INTERSTITIAL_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
-                "", 320, 50, true, "", false, "", "", ""));
+                "", 320, 50, true, "", false, "", "", "", 3));
 
-        adUnitList.add(new AdUnit(-1, "AdMob Custom Interstitial", "/5300653/AndroidApp_S2S_Interstitial",
+        adUnitList.add(new AdUnit(-1, "AdMob Custom Interstitial", "/5300653/rfmsdk-sample-android",
                 AdUnit.AdType.ADMOB_INTERSTITIAL_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
-                "", -1, -1, true, "", false, "", "", ""));
+                "", -1, -1, true, "", false, "", "", "", 4));
 
-        adUnitList.add(new AdUnit(-1, "AdMob Custom Interstitial - VAST", "/5300653/QA_FastLane_Banner_VideoVAST_StandardInventory",
-                AdUnit.AdType.ADMOB_INTERSTITIAL_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
-                "", -1, -1, true, "", false, "", "", ""));
-        adUnitList.add(new AdUnit(-1, "AdMob FastLane Banner", "/5300653/custom_admob",
+        adUnitList.add(new AdUnit(-1, "AdMob FastLane Banner", "/5300653/rfmsdk-sample-android-fl",
                 AdUnit.AdType.ADMOB_FASTLANE_BANNER_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
-                "", 320, 50, true, "", false, "", "", ""));
+                "", 320, 50, true, "", false, "http://mrp.rubiconproject.com", "50144540EF720133146F22000B3510F7", "111008", 5));
 
         sqLiteDatabase.execSQL(DATABASE_CREATE);
         sqLiteDatabase.beginTransaction();

@@ -1,14 +1,16 @@
 /*
- * Copyright (C) 2016 Rubicon Project. All rights reserved
+  * Copyright (C) 2016 Rubicon Project. All rights reserved
  * 
- * Adapter for integrating RFM SDK with Admob SDK
- * RFM SDK will be triggered via Admob Custom Banner Event
- * version: 3.0.0
+ * @author: Rubicon Project.
+ *  file for integrating RFM SDK with Admob SDK
+ *  RFM SDK will be triggered via Admob Custom Banner Event
  * 
  */
 package com.rfm.extras.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,9 @@ import com.rfm.sdk.RFMAdRequest;
 import com.rfm.sdk.RFMAdView;
 import com.rfm.sdk.RFMAdViewListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RFMAdmobAdapter implements CustomEventBanner {
 
 	private static final String LOG_TAG = "RFMAdmobAdapter";
@@ -33,6 +38,12 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 	////RFM Placement Settings
 	private static final String RFM_SERVER_NAME = "http://mrp.rubiconproject.com/";
 	private static final String RFM_PUB_ID = "111008";
+
+	private HashMap<String, String> localTargetingInfoHM = new HashMap<String, String>();
+
+	RFMAdmobAdapter() {
+		localTargetingInfoHM.put("adp_version", "dfp_adp_3.1.0");
+	}
 
 	@Override
 	public void requestBannerAd(Context _context,
@@ -65,6 +76,9 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			mAdRequest.setAdDimensionParams(adWidth, adHeight);
 		}
 
+		HashMap<String, String> targetingParamsHM = getTargetingParams();
+		mAdRequest.setTargetingParams(targetingParamsHM);
+
 		setBannerAdViewListener();
 		/*Optional Targeting Parameters*/
        	/*Uncomment and configure desired parameters*/
@@ -96,7 +110,8 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			@Override
 			public void onAdReceived(RFMAdView adView) {
 				Log.d(LOG_TAG, "RFM :onAdReceived ");
-				rfmAdView.setVisibility(View.VISIBLE);
+				if (rfmAdView != null)
+					rfmAdView.setVisibility(View.VISIBLE);
 
 				if (customEventListener != null) {
 					customEventListener.onAdLoaded(adView);
@@ -180,7 +195,8 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			@Override
 			public void onAdFailed(RFMAdView adView) {
 				Log.d(LOG_TAG, "RFM :onAdFailed ");
-				rfmAdView.setVisibility(View.GONE);
+				if (rfmAdView != null)
+					rfmAdView.setVisibility(View.GONE);
 
 				if (customEventListener != null) {
 					// 222 is random code, can be customized
@@ -189,6 +205,12 @@ public class RFMAdmobAdapter implements CustomEventBanner {
 			}
 		});
 
+	}
+
+	private HashMap<String, String> getTargetingParams() {
+		HashMap<String, String> targetingHM = new HashMap<String, String>();
+		targetingHM.putAll(localTargetingInfoHM);
+		return targetingHM;
 	}
 
 	@Override

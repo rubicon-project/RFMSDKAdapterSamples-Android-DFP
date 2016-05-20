@@ -20,7 +20,7 @@ import com.rfm.sdk.RFMAdView;
 public class RFMViewInterstitialActivity extends Activity {
 	
 	private PublisherInterstitialAd admobInterstitial;
-	public static Activity rfmViewInterstitial;
+	private static Activity rfmViewInterstitial;
 	private int CONTAINDER_ID = 100;
 	private FrameLayout mFrameLayout;
 	private RFMAdView mRFMAdView;
@@ -65,16 +65,28 @@ public class RFMViewInterstitialActivity extends Activity {
     }
     
     public static void dismissActivity() {
-    	rfmViewInterstitial.finish();
+        if (rfmViewInterstitial != null)
+    	    rfmViewInterstitial.finish();
+        rfmViewInterstitial = null;
     }
     
 	@Override 
     public void onDestroy() { 
         super.onDestroy();
-        if (mFrameLayout != null && mRFMAdView != null)
-        	mFrameLayout.removeView(mRFMAdView);
+        if (mFrameLayout != null && mRFMAdView != null) {
+            mRFMAdView.rfmAdViewDestroy();
+            mFrameLayout.removeView(mRFMAdView);
+        }
 
-        RFMAdmobInterstitialAdapter.customEventInterstitialListener.onAdClosed();
+        RFMAdmobInterstitialAdapter.rfmAdView = null;
+        mRFMAdView = null;
+
+        if (RFMAdmobInterstitialAdapter.customEventInterstitialListener != null)
+            RFMAdmobInterstitialAdapter.customEventInterstitialListener.onAdClosed();
+
+        RFMAdmobInterstitialAdapter.customEventInterstitialListener = null;
+        rfmViewInterstitial = null;
+
         if (admobInterstitial != null) {
         	admobInterstitial.setAdListener(null);
             admobInterstitial = null;

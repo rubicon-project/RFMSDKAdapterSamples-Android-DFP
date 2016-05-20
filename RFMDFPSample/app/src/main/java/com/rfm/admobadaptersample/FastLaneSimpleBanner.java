@@ -1,13 +1,11 @@
 /*
  * Copyright (c) 2016. Rubicon Project. All rights reserved
- * RFM SDK verion required: 4.1.0
+ *
  */
 package com.rfm.admobadaptersample;
 
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdListener;
@@ -36,9 +34,9 @@ public class FastLaneSimpleBanner extends BaseActivity implements AppEventListen
         adView = new PublisherAdView(this);
         LinearLayout layout = (LinearLayout) findViewById(R.id.adcontainer);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(mAdWidth*displayDesity, mAdHeight*displayDesity);
-        llp.gravity = Gravity.CENTER;
         // Add the adView to it.
-        layout.addView(adView, llp);
+        if (layout!=null)
+            layout.addView(adView, llp);
         updateAdView();
         createBannerRequest();
         setLoadAdAction();
@@ -57,28 +55,16 @@ public class FastLaneSimpleBanner extends BaseActivity implements AppEventListen
 
     @Override
     public void updateAdView() {
-        try {
-            setAdRequestSize(mAdWidth, mAdHeight, adView);
-            DisplayMetrics dm = fetchScreenSize(this);
-            if(mAdWidth < -1) {
-                mAdWidth = (int) (dm.widthPixels/dm.density);
-            }
-            if(mAdHeight < -1) {
-                mAdHeight = (int) (dm.heightPixels/dm.density);
-            }
-            if(adView != null) {
-                adView.setAdSizes(new com.google.android.gms.ads.AdSize(mAdWidth, mAdHeight));
-            }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Failed to set ad size, "+e.getMessage());
-        }
+        setAdRequestSize(mAdWidth, mAdHeight, adView);
+        adView.setAdSizes(new com.google.android.gms.ads.AdSize(mAdWidth, mAdHeight));
     }
 
     private void createRFMFastLaneRequest() {
-
-        rfmAdRequest.setRFMParams("http://mrp.rubiconproject.com/", "111315", "792A6740AA8B01330EE222000B2E019E");
-        rfmAdRequest.setAdDimensionParams(320, 50);
-
+        if(rfmAdId != null && !rfmAdId.trim().equalsIgnoreCase("0")){
+            rfmAdRequest.setRFMTestAdId(rfmAdId);
+        }
+        rfmAdRequest.setRFMParams(rfmServer, rfmPubId, rfmAppId);
+        rfmAdRequest.setAdDimensionParams(mAdWidth, mAdHeight);
     }
 
     @Override
@@ -89,11 +75,6 @@ public class FastLaneSimpleBanner extends BaseActivity implements AppEventListen
         rfmFastLane.preFetchAd(rfmAdRequest, new RFMFastLane.RFMFastLaneAdListener() {
             @Override
             public void onAdReceived(Map<String, String> serverExtras) {
-
-                // @TODO: Remove this hack once we get serverExtras from server in response
-                //serverExtras.put("rfm_pr", "2.0-3.0");
-                //serverExtras.put("rfm_pr", "0.5-1.0");
-
                 appendTextToConsole("FASTLANE onAdReceived " +
                         (serverExtras != null ? serverExtras.size() : "serverExtras is null!"));
 

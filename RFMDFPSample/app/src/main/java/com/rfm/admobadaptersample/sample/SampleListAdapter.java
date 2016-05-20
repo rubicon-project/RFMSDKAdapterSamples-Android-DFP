@@ -7,19 +7,17 @@ package com.rfm.admobadaptersample.sample;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.nhaarman.listviewanimations.ArrayAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.UndoAdapter;
 import com.rfm.admobadaptersample.R;
 
 import java.util.ArrayList;
 
-public class SampleListAdapter extends ArrayAdapter<Object> implements UndoAdapter {
+public class SampleListAdapter extends ArrayAdapter<Object> {
 
     private Activity mContext;
 
@@ -28,7 +26,7 @@ public class SampleListAdapter extends ArrayAdapter<Object> implements UndoAdapt
     }
 
     public SampleListAdapter(Activity context) {
-        super(new ArrayList<Object>());
+        super(context, 0, new ArrayList<Object>());
         this.mContext = context;
     }
 
@@ -45,22 +43,6 @@ public class SampleListAdapter extends ArrayAdapter<Object> implements UndoAdapt
         } else {
             return RowType.HEADER_ITEM.ordinal();
         }
-    }
-
-    @NonNull
-    @Override
-    public View getUndoView(final int position, final View convertView, @NonNull final ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.sample_list_undo_row, parent, false);
-        }
-        return view;
-    }
-
-    @NonNull
-    @Override
-    public View getUndoClickView(@NonNull final View view) {
-        return view.findViewById(R.id.undo_row_undobutton);
     }
 
     private static class HeaderHolder {
@@ -131,7 +113,7 @@ public class SampleListAdapter extends ArrayAdapter<Object> implements UndoAdapt
                     listItemHolder.siteId.setText(adUnit.getSiteId());
                 }
                 if (listItemHolder.testNumber != null) {
-                    listItemHolder.testNumber.setText(adUnit.getCount() + "");
+                    listItemHolder.testNumber.setText(String.valueOf(adUnit.getCount()));
                 }
 
                 // return the created view

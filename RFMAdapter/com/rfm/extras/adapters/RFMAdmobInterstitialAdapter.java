@@ -1,9 +1,10 @@
+
 /*
- * Copyright (C) 2016 Rubicon Project. All rights reserved
+  * Copyright (C) 2016 Rubicon Project. All rights reserved
  *
- * Adapter for integrating RFM SDK with Admob SDK
- * RFM SDK will be triggered via Admob Custom Interstitial
- * version: 1.0.0
+ * @author: Rubicon Project.
+ *  file for integrating RFM SDK with Admob SDK
+ *  RFM SDK will be triggered via Admob Custom Interstitial Event
  *
  */
 package com.rfm.extras.adapters;
@@ -24,6 +25,8 @@ import com.rfm.sdk.RFMAdView;
 import com.rfm.sdk.RFMInterstitialAdViewListener;
 import com.rfm.util.RFMLog;
 
+import java.util.HashMap;
+
 public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
 
     private static final String LOG_TAG = "RFMAdmobAdapter";
@@ -35,6 +38,12 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
     ////RFM Placement Settings
     private static final String RFM_SERVER_NAME = "http://mrp.rubiconproject.com/";
     private static final String RFM_PUB_ID = "111008";
+
+    private HashMap<String, String> localTargetingInfoHM = new HashMap<String, String>();
+
+    RFMAdmobInterstitialAdapter() {
+        localTargetingInfoHM.put("adp_version", "dfp_adp_3.1.0");
+    }
 
     @Override
     public void requestInterstitialAd(Context _context, CustomEventInterstitialListener _customEventInterstitialListener, String serverParameter, MediationAdRequest mediationAdRequest, Bundle bundle) {
@@ -59,6 +68,10 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
 
         mAdRequest.setRFMParams(RFM_SERVER_NAME, RFM_PUB_ID, serverParameter);
         mAdRequest.setRFMAdAsInterstitial(true);
+
+        HashMap<String, String> targetingParamsHM = getTargetingParams();
+        mAdRequest.setTargetingParams(targetingParamsHM);
+
         setInterstitialAdViewListener();
 
         //Request Ad
@@ -112,7 +125,8 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
             }
 
             public void onInterstitialAdDismissed(RFMAdView adView) {
-                rfmAdView.setVisibility(View.GONE);
+                if (rfmAdView != null)
+                    rfmAdView.setVisibility(View.GONE);
                 RFMViewInterstitialActivity.dismissActivity();
                 Log.v("LOG_TAG", "RFM Ad: Interstitial ad dismissed");
             }
@@ -143,7 +157,6 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
                 if (RFMLog.canLogVerbose()) {
                     Log.v(LOG_TAG, " Into didDisplayAd ");
                 }
-                rfmAdView.displayAd();
             }
 
             @Override
@@ -154,6 +167,12 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
 
     }
 
+    private HashMap<String, String> getTargetingParams() {
+        HashMap<String, String> targetingHM = new HashMap<String, String>();
+        targetingHM.putAll(localTargetingInfoHM);
+        return targetingHM;
+    }
+
     private void showFullScreenRFMInterstitial() {
         Intent i = new Intent(context, RFMViewInterstitialActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -162,7 +181,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
 
     @Override
     public void showInterstitial() {
-        if(rfmAdView.isAdAvailableToDisplay() ||
+        if(rfmAdView != null && rfmAdView.isAdAvailableToDisplay() ||
                 rfmAdView.getAdStateRO().getCurrentState() == AdState.AdViewState.INTERSTITIAL_DISP) {
             showFullScreenRFMInterstitial();
             if(customEventInterstitialListener != null) {
@@ -182,6 +201,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
         } catch (Exception e) {
             Log.d(LOG_TAG, "Failed to clean up RFM Adview "+e.getMessage());
         }
+        customEventInterstitialListener = null;
     }
 
     @Override
