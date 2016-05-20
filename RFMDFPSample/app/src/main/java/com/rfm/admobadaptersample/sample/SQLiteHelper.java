@@ -91,7 +91,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 AdUnit.AdType.ADMOB_INTERSTITIAL_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
                 "", 320, 50, true, "", false, "", "", "", 3));
 
-        adUnitList.add(new AdUnit(-1, "AdMob Custom Interstitial", "/5300653/AndroidApp_S2S_Interstitial",
+        adUnitList.add(new AdUnit(-1, "AdMob Custom Interstitial", "/5300653/rfmsdk-sample-android",
                 AdUnit.AdType.ADMOB_INTERSTITIAL_AD, 1, 0, AdUnit.LocationType.NORMAL, "6", "0.0", "0.0",
                 "", -1, -1, true, "", false, "", "", "", 4));
 
