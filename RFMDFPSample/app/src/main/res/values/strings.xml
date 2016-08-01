@@ -30,7 +30,6 @@
 
     <!-- About screen constants -->
     <string name="rfm_sdk_version">RFM SDK Version</string>
-    <string name="mopub_sdk_version">Mopub SDK Version</string>
     <string name="sample_app_version">Sample App Version</string>
     <string name="menu_about">About</string>
 

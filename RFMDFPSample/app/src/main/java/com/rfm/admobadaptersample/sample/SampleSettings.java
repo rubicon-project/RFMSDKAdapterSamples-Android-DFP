@@ -27,8 +27,7 @@ import java.util.List;
 
 public class SampleSettings extends AppCompatActivity {
 
-    private final String LOG_TAG = "SampleSettings";
-    Toolbar toolbar;
+    private Toolbar toolbar;
     private Context mContext;
     private EditText locPrecisionEditText;
     private Spinner locationTypeSpinner;
@@ -67,7 +66,7 @@ public class SampleSettings extends AppCompatActivity {
 
     }
 
-    protected void initSampleSettings() {
+    private void initSampleSettings() {
         AdDataSource adDataSource = AdDataSource.getInstance(mContext);
         AdUnit adUnit;
 

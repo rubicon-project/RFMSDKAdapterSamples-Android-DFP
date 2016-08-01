@@ -15,22 +15,22 @@ import com.rfm.admobadaptersample.SimpleInterstitial;
 public class AdUnit implements Comparable<AdUnit> {
 
     public static final String ID = "id";
-    public static final String TEST_CASE_NAME = "testCaseName";
-    public static final String SITE_ID = "siteId";
-    public static final String AD_TYPE = "adType";
-    public static final String REFRESH_COUNT = "refreshCount";
-    public static final String REFRESH_INTERVAL = "refreshInterval";
-    public static final String LOCATION_TYPE = "locationType";
-    public static final String LOCATION_PRECISION = "locationPrecision";
-    public static final String LAT = "latitude";
-    public static final String LONG = "longitude";
-    public static final String TARGETING_KEY_VALUE = "targetingKeyValue";
-    public static final String AD_WIDTH = "adWidth";
-    public static final String AD_HEIGHT = "adHeight";
-    public static final String TEST_MODE = "testMode";
-    public static final String AD_ID = "adId";
-    public static final String IS_CUSTOM = "isCustom";
-    public static final String COUNT = "count";
+    static final String TEST_CASE_NAME = "testCaseName";
+    static final String SITE_ID = "siteId";
+    static final String AD_TYPE = "adType";
+    static final String REFRESH_COUNT = "refreshCount";
+    static final String REFRESH_INTERVAL = "refreshInterval";
+    static final String LOCATION_TYPE = "locationType";
+    static final String LOCATION_PRECISION = "locationPrecision";
+    static final String LAT = "latitude";
+    static final String LONG = "longitude";
+    static final String TARGETING_KEY_VALUE = "targetingKeyValue";
+    static final String AD_WIDTH = "adWidth";
+    static final String AD_HEIGHT = "adHeight";
+    static final String TEST_MODE = "testMode";
+    static final String AD_ID = "adId";
+    static final String IS_CUSTOM = "isCustom";
+    static final String COUNT = "count";
 
     private long mId;
     private String mTestCaseName;
@@ -51,9 +51,9 @@ public class AdUnit implements Comparable<AdUnit> {
     private int mCount = 0;
 
     // RFM Sample specific
-    public static final String RFM_SERVER = "rfmServer";
-    public static final String APP_ID = "appId";
-    public static final String PUB_ID = "pubId";
+    static final String RFM_SERVER = "rfmServer";
+    static final String APP_ID = "appId";
+    static final String PUB_ID = "pubId";
     private String mRFMServer;
     private String mAppId;
     private String mPubId;
@@ -95,7 +95,7 @@ public class AdUnit implements Comparable<AdUnit> {
         private final String name;
         private final Class<? extends Activity> activityClass;
 
-        private AdType(final String name, final Class<? extends Activity> fragmentClass) {
+        AdType(final String name, final Class<? extends Activity> fragmentClass) {
             this.name = name;
             this.activityClass = fragmentClass;
         }
@@ -242,7 +242,7 @@ public class AdUnit implements Comparable<AdUnit> {
     }
 
 
-    public Bundle toBundle() {
+    Bundle toBundle() {
         final Bundle bundle = new Bundle();
         bundle.putLong(ID, mId);
         bundle.putString(TEST_CASE_NAME, mTestCaseName);
@@ -270,7 +270,7 @@ public class AdUnit implements Comparable<AdUnit> {
         return bundle;
     }
 
-    public static AdUnit fromBundle(final Bundle bundle) {
+    static AdUnit fromBundle(final Bundle bundle) {
         final Long id = bundle.getLong(ID, -1L);
         final String testCaseName = bundle.getString(TEST_CASE_NAME);
         final String siteId = bundle.getString(SITE_ID);

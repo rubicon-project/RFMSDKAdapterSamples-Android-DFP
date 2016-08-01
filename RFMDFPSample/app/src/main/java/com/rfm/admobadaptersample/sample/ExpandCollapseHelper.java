@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-public class ExpandCollapseHelper {
+class ExpandCollapseHelper {
 
     private final static int ANIMATION_SPEED = 300;
-    public static void expand(final View v) {
+    static void expand(final View v) {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final int targetHeight = v.getMeasuredHeight();
 
@@ -41,7 +41,7 @@ public class ExpandCollapseHelper {
         v.startAnimation(a);
     }
 
-    public static void collapse(final View v) {
+    static void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
         Animation a = new Animation()

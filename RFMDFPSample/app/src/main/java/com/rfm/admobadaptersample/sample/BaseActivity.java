@@ -118,7 +118,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
-    }
+;   }
 
     protected void setLoadAdAction() {
 

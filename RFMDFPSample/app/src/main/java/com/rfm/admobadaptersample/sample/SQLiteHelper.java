@@ -13,29 +13,29 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLiteHelper extends SQLiteOpenHelper {
+class SQLiteHelper extends SQLiteOpenHelper {
 
-    public static final String SAMPLE_ADS_TABLE = "sampleads";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_TEST_CASE_NAME = "testCaseName";
-    public static final String COLUMN_SITE_ID = "siteId";
-    public static final String COLUMN_AD_TYPE = "adType";
-    public static final String COLUMN_REFRESH_COUNT = "refreshCount";
-    public static final String COLUMN_REFRESH_INTERVAL = "refreshInterval";
-    public static final String COLUMN_LOCATION_TYPE = "locationType";
-    public static final String COLUMN_LOCATION_PRECISION = "locationPrecision";
-    public static final String COLUMN_LAT = "latitude";
-    public static final String COLUMN_LONG = "longitude";
-    public static final String COLUMN_TARGETING_KEY_VALUE = "targetingKeyValue";
-    public static final String COLUMN_AD_WIDTH = "adWidth";
-    public static final String COLUMN_AD_HEIGHT = "adHeight";
-    public static final String COLUMN_TEST_MODE = "testMode";
-    public static final String COLUMN_AD_ID = "adId";
-    public static final String COLUMN_IS_CUSTOM = "isCustom";
+    static final String SAMPLE_ADS_TABLE = "sampleads";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_TEST_CASE_NAME = "testCaseName";
+    static final String COLUMN_SITE_ID = "siteId";
+    static final String COLUMN_AD_TYPE = "adType";
+    static final String COLUMN_REFRESH_COUNT = "refreshCount";
+    static final String COLUMN_REFRESH_INTERVAL = "refreshInterval";
+    static final String COLUMN_LOCATION_TYPE = "locationType";
+    static final String COLUMN_LOCATION_PRECISION = "locationPrecision";
+    static final String COLUMN_LAT = "latitude";
+    static final String COLUMN_LONG = "longitude";
+    static final String COLUMN_TARGETING_KEY_VALUE = "targetingKeyValue";
+    static final String COLUMN_AD_WIDTH = "adWidth";
+    static final String COLUMN_AD_HEIGHT = "adHeight";
+    static final String COLUMN_TEST_MODE = "testMode";
+    static final String COLUMN_AD_ID = "adId";
+    static final String COLUMN_IS_CUSTOM = "isCustom";
 
-    public static final String COLUMN_RFM_SERVER = "rfmServer";
-    public static final String COLUMN_APP_ID = "appId";
-    public static final String COLUMN_PUB_ID = "pubId";
+    static final String COLUMN_RFM_SERVER = "rfmServer";
+    static final String COLUMN_APP_ID = "appId";
+    static final String COLUMN_PUB_ID = "pubId";
 
     private static final String DATABASE_NAME = "admobadsDatabase.db";
     private static final int DATABASE_VERSION = 1;
@@ -68,7 +68,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private final Context mContext;
 
-    public SQLiteHelper(final Context context) {
+    SQLiteHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context.getApplicationContext();
     }
@@ -80,9 +80,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         adUnitList.add(new AdUnit(-1, "AdMob Banner", "/6253334/dfp_example_ad/banner",
                 AdUnit.AdType.ADMOB_BANNER_AD, 1, 0, AdUnit.LocationType.NORMAL, "6","0.0", "0.0",
                 "", 320, 50, true, "", false, "", "", "", 1));
-
-        // /5300653/android-adapter-neelan
-        // /5300653/AndroidApp_S2S_Banner_320x50
 
         adUnitList.add(new AdUnit(-1, "AdMob Custom Banner", "/5300653/rfmsdk-sample-android",
                 AdUnit.AdType.ADMOB_BANNER_AD, 1, 0, AdUnit.LocationType.NORMAL, "6","0.0", "0.0",

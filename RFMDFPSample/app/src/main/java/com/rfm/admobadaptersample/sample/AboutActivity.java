@@ -11,14 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.ads.mediation.admob.AdMobAdapter;
 import com.rfm.admobadaptersample.R;
 import com.rfm.sdk.RFMAdView;
 
 public class AboutActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "AboutActivity";
-    Toolbar toolbar;
+    private Toolbar toolbar;
     private Context mContext;
 
     @Override
@@ -43,9 +42,6 @@ public class AboutActivity extends AppCompatActivity {
         RFMAdView mRFMBannerAdView = new RFMAdView(mContext);
         TextView rfmSdkVersionTextView = (TextView) findViewById(R.id.rfm_sdk_version_textview);
         rfmSdkVersionTextView.setText(mRFMBannerAdView.getSDKVersion());
-
-        TextView mopubSdkVersionTextView = (TextView) findViewById(R.id.admob_sdk_version_textview);
-        //mopubSdkVersionTextView.setText(.SDK_VERSION);
 
         TextView sampleAppVersionTextView = (TextView) findViewById(R.id.sample_version_textview);
         sampleAppVersionTextView.setText(com.rfm.admobadaptersample.BuildConfig.VERSION_NAME);

@@ -13,12 +13,13 @@ import com.rfm.admobadaptersample.sample.BaseActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
 public class SimpleBanner extends BaseActivity implements AppEventListener {
-	
-	private final String LOG_TAG = "SimpleBanner";
-	private PublisherAdView adView;
+
+    private final String LOG_TAG = "SimpleBanner";
+    private PublisherAdView adView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,9 +28,10 @@ public class SimpleBanner extends BaseActivity implements AppEventListener {
 
         adView = new PublisherAdView(this);
         LinearLayout layout = (LinearLayout) findViewById(R.id.adcontainer);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(mAdWidth*displayDesity, mAdHeight*displayDesity);
-        // Add the adView to it.
-        if (layout!=null)
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(mAdWidth * displayDesity, mAdHeight * displayDesity);
+        llp.gravity= Gravity.CENTER;
+        // Add the adView to layout
+        if (layout != null)
             layout.addView(adView, llp);
         updateAdView();
         createBannerRequest();
@@ -64,10 +66,12 @@ public class SimpleBanner extends BaseActivity implements AppEventListener {
         Log.v(LOG_TAG, "Message for App event " + message);
     }
 
-    /** Gets a string error reason from an error code. */
+    /**
+     * Gets a string error reason from an error code.
+     */
     private String getErrorReason(int errorCode) {
         String errorReason = "";
-        switch(errorCode) {
+        switch (errorCode) {
             case AdRequest.ERROR_CODE_INTERNAL_ERROR:
                 errorReason = "Internal error";
                 break;
@@ -84,44 +88,34 @@ public class SimpleBanner extends BaseActivity implements AppEventListener {
         return errorReason;
     }
 
-    public void createBannerRequest() {
+    private void createBannerRequest() {
         adView.setAdUnitId(siteId);
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 appendTextToConsole("Ad loaded");
-                mNumberOfSuccess=mNumberOfSuccess+1;
+                mNumberOfSuccess = mNumberOfSuccess + 1;
                 updateCountersView();
             }
 
-            /** Called when an ad failed to load. */
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 String message = String.format("Ad failed %s", getErrorReason(errorCode));
                 appendTextToConsole(message);
-                mNumberOfFailures=mNumberOfFailures+1;
+                mNumberOfFailures = mNumberOfFailures + 1;
                 updateCountersView();
             }
 
-            /**
-             * Called when an Activity is created in front of the app (e.g. an interstitial is shown, or an
-             * ad is clicked and launches a new Activity).
-             */
             @Override
             public void onAdOpened() {
                 appendTextToConsole("Ad opened");
             }
 
-            /** Called when an ad is closed and about to return to the application. */
             @Override
             public void onAdClosed() {
-                appendTextToConsole( "Ad closed");
+                appendTextToConsole("Ad closed");
             }
 
-            /**
-             * Called when an ad is clicked and going to start a new Activity that will leave the
-             * application (e.g. breaking out to the Browser or Maps application).
-             */
             @Override
             public void onAdLeftApplication() {
                 appendTextToConsole("Ad left Application ");

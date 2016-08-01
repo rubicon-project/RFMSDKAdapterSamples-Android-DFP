@@ -37,27 +37,7 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            style="@style/RowItemCardView">
-
-            <RelativeLayout
-                style="@style/About.Row.Container">
-
-                <TextView
-                    android:id="@+id/mopub_sdk_version_label"
-                    style="@style/About.Row.Label"
-                    android:text="@string/mopub_sdk_version"/>
-
-                <TextView
-                    android:id="@+id/admob_sdk_version_textview"
-                    style="@style/About.Row.Value"
-                    android:layout_below="@id/mopub_sdk_version_label"
-                    android:text=""/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
+         <android.support.v7.widget.CardView
             style="@style/RowItemCardView">
 
             <RelativeLayout

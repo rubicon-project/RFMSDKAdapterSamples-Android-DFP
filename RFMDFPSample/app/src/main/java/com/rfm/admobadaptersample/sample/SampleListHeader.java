@@ -4,7 +4,7 @@
  */
 package com.rfm.admobadaptersample.sample;
 
-public class SampleListHeader {
+class SampleListHeader {
     private final String name;
 
     public SampleListHeader(String name) {

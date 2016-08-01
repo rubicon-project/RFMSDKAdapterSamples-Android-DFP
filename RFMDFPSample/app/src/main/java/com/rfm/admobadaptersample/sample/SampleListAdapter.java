@@ -17,15 +17,15 @@ import com.rfm.admobadaptersample.R;
 
 import java.util.ArrayList;
 
-public class SampleListAdapter extends ArrayAdapter<Object> {
+class SampleListAdapter extends ArrayAdapter<Object> {
 
     private Activity mContext;
 
-    public enum RowType {
+    private enum RowType {
         HEADER_ITEM, LIST_ITEM
     }
 
-    public SampleListAdapter(Activity context) {
+    SampleListAdapter(Activity context) {
         super(context, 0, new ArrayList<Object>());
         this.mContext = context;
     }
@@ -46,13 +46,13 @@ public class SampleListAdapter extends ArrayAdapter<Object> {
     }
 
     private static class HeaderHolder {
-        public TextView headerTitle;
+        TextView headerTitle;
     }
 
     private static class ListItemHolder {
-        public TextView testCaseName;
-        public TextView siteId;
-        public TextView testNumber;
+        TextView testCaseName;
+        TextView siteId;
+        TextView testNumber;
     }
 
     @SuppressLint("InflateParams")

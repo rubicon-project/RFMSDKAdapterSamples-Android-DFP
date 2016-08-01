@@ -12,9 +12,10 @@ android {
         applicationId "com.rfm.admobadaptersample"
         minSdkVersion 10
         targetSdkVersion 23
-        versionCode 3
-        versionName "3.1.0"
+        versionCode 4
+        versionName "3.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     sourceSets {
         main {
@@ -29,6 +30,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
 
     packagingOptions {

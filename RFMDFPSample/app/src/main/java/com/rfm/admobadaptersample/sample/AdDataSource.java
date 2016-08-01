@@ -39,7 +39,7 @@ import static com.rfm.admobadaptersample.sample.SQLiteHelper.COLUMN_LOCATION_TYP
 
 import static com.rfm.admobadaptersample.sample.SQLiteHelper.SAMPLE_ADS_TABLE;
 
-public class AdDataSource {
+class AdDataSource {
 
     String LOG_TAG = "AdDataSource";
     private static AdDataSource adDataSourceInstance = null;
@@ -71,7 +71,7 @@ public class AdDataSource {
         mDatabaseHelper = new SQLiteHelper(context);
     }
 
-    public static AdDataSource getInstance(Context context) {
+    static AdDataSource getInstance(Context context) {
         if (adDataSourceInstance == null) {
             synchronized (AdDataSource.class) {
                 if (adDataSourceInstance == null) {
@@ -218,7 +218,7 @@ public class AdDataSource {
                 testMode == 1, adId, isCustom == 1, rfmServer, appId, pubId, 0);
     }
 
-    public void cleanUp() {
+    void cleanUp() {
         if(mDatabaseHelper != null) {
             mDatabaseHelper.close();
             mDatabaseHelper = null;
