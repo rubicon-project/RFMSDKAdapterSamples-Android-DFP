@@ -96,7 +96,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
             }
 
             @Override
-            public void onAdRequested(RFMAdView adView, String requestUrl, boolean adRequestSuccess) {
+            public void onAdRequested(String requestUrl, boolean adRequestSuccess) {
                 Log.v("LOG_TAG", "RFM Ad: Requesting Url:" + requestUrl);
             }
 

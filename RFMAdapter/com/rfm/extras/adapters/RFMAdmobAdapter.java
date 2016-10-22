@@ -107,7 +107,7 @@ public class RFMAdmobAdapter implements CustomEventBanner {
             }
 
             @Override
-            public void onAdRequested(RFMAdView adView, String requestUrl, boolean adRequestSuccess) {
+            public void onAdRequested(String requestUrl, boolean adRequestSuccess) {
                 Log.d(LOG_TAG, "RequestRFMAd: " + requestUrl);
             }
 

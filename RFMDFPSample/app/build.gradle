@@ -12,8 +12,8 @@ android {
         applicationId "com.rfm.admobadaptersample"
         minSdkVersion 10
         targetSdkVersion 23
-        versionCode 4
-        versionName "3.2.0"
+        versionCode 5
+        versionName "3.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
