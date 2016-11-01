@@ -40,7 +40,7 @@ public class RFMAdmobAdapter implements CustomEventBanner {
     private HashMap<String, String> localTargetingInfoHM = new HashMap<String, String>();
 
     public RFMAdmobAdapter() {
-        localTargetingInfoHM.put("adp_version", "dfp_adp_3.2.0");
+        localTargetingInfoHM.put("adp_version", "dfp_adp_3.3.0");
     }
 
     @Override
