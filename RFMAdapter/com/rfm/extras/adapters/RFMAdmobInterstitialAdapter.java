@@ -39,7 +39,7 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
     private HashMap<String, String> localTargetingInfoHM = new HashMap<String, String>();
 
     public RFMAdmobInterstitialAdapter() {
-        localTargetingInfoHM.put("adp_version", "dfp_adp_3.3.0");
+        localTargetingInfoHM.put("adp_version", "dfp_adp_3.4.0");
     }
 
     @Override
@@ -124,6 +124,11 @@ public class RFMAdmobInterstitialAdapter implements CustomEventInterstitial {
                     case FULL_SCREEN_AD_DISMISSED:
                         Log.v("LOG_TAG", "RFM Ad: Full screen ad dismissed");
                         break;
+                    case AD_CLICKED:
+                        Log.v("LOG_TAG", "RFM Ad: Full screen ad clicked");
+                        if(mCustomEventInterstitialListener != null) {
+                            mCustomEventInterstitialListener.onAdClicked();
+                        }
                     default:
                         break;
                 }
