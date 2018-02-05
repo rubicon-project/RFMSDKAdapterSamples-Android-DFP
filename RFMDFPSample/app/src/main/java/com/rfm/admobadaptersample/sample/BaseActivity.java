@@ -288,12 +288,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (adwidth == -1  || adwidth < -1) {
                 bannerLayout.width = LinearLayout.LayoutParams.FILL_PARENT;
             } else {
-                bannerLayout.width = (int) (adwidth * displayDesity);
+                bannerLayout.width = (int) (adwidth * displayDesity) + (adwidth/2);
             }
             if (adheight == -1 || adheight < -1) {
                 bannerLayout.height = LinearLayout.LayoutParams.FILL_PARENT;
             } else {
-                bannerLayout.height = (int) (adheight * displayDesity);
+                bannerLayout.height = (int) (adheight * displayDesity) + (adheight/2);
             }
 
             viewObj.setLayoutParams(bannerLayout);
